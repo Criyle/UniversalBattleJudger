@@ -1,0 +1,14 @@
+ai.cpp: In constructor ‘Droplet::Droplet(int, int, Vector)’:
+ai.cpp:128:10: warning: ‘Droplet::isChoosen’ will be initialized after [-Wreorder]
+     bool isChoosen;
+          ^
+ai.cpp:124:10: warning:   ‘bool Droplet::moved’ [-Wreorder]
+     bool moved;
+          ^
+ai.cpp:131:5: warning:   when initialized here [-Wreorder]
+     Droplet (int _id, int _owner, Vector _pos):
+     ^
+ai.cpp: In function ‘bool cmp_by_blood_level(const Droplet&, const Droplet&)’:
+ai.cpp:161:31: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+     return a.blood == b.blood && a.level > b.level || a.blood < b.blood;
+                               ^

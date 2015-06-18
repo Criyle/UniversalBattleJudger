@@ -1,0 +1,4 @@
+ai.cpp: In function ‘void makeDecision()’:
+ai.cpp:385:36: warning: variable ‘attachX’ set but not used [-Wunused-but-set-variable]
+     int All = 0, num = 0, tmp = 0, attachX = -1, attachY = -1;
+                                    ^

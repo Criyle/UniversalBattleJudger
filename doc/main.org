@@ -1,0 +1,171 @@
+#+title:ai_judge
+#+author:criyle
+#+Email:CriyleSanchi@gmail.com
+
+#+Latex_Header: \everymath{\displaystyle}
+#+Latex_header: \usepackage{libertineotf}
+#+LaTeX_Header: \usepackage{tikz}
+#+LaTeX_Header: \usepackage{algorithm}
+#+LaTeX_Header: \usepackage{algorithmic}
+#+latex_header: \usepackage{geometry}
+#+latex_header: \usepackage{listings}
+
+#+Latex_header: \usepackage{fontspec}
+# #+latex_header: \usepackage[slantfont,boldfont]{xeCJK}
+
+#+Latex_header: \geometry{left=2.5cm, right=2.5cm, top=3cm, bottom=3cm}
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:nil -:nil f:t *:t <:t todo:nil tags:nil
+#+EXPORT_SELECT_TAGS: G1
+
+# 将系统字体名映射为逻辑字体名称，主要是为了维护的方便  
+
+#+Latex_header: \newcommand\fontnamehei{WenQuanYi Micro Hei}
+#+Latex_header: \newcommand\fontnamesong{WenQuanYi Micro Hei}
+#+Latex_header: \newcommand\fontnamekai{AR PL UKai CN}
+#+Latex_header: \newcommand\fontnamemono{WenQuanYi Micro Hei Mono}
+#+Latex_header: \newcommand\fontnameroman{WenQuanYi Micro Hei}
+
+#+Latex_header: \setmainfont[BoldFont=\fontnamehei]{\fontnamehei}  
+#+Latex_header: \setsansfont[BoldFont=\fontnamesong]{\fontnamesong}  
+#+Latex_header: \setmonofont{\fontnamemono}  
+#+Latex_header: \newfontinstance\MONO{\fontnamemono}
+# #+Latex_header: \setCJKmainfont[Scale=0.9]{\fontnamehei}
+# #+Latex_header: \setCJKmonofont[Scale=0.9]{\fontnamemono}
+
+#+BEGIN_LaTeX
+\lstset{
+%basicstyle=\footnotesize\ttfamily,
+basicstyle = \tt,
+numbers=left,
+numberstyle=\tiny,
+%stepnumber=2,
+numbersep=5pt,
+tabsize=2,
+extendedchars=true,
+breaklines=true,
+keywordstyle=\color{red},
+frame=single,
+stringstyle=\color{white}\ttfamily,
+showspaces=false,
+showtabs=false,
+xleftmargin=17pt,
+framexleftmargin=17pt,
+framexrightmargin=5pt,
+framexbottommargin=4pt,
+backgroundcolor=\color{lightgray},
+showstringspaces=false
+}
+#+END_LaTeX
+
+#+latex:\newpage
+#+EXPORT_SELECT_TAGS: User
+
+* 简介 :User:
+ai_judge 是一个ai的虚拟化评测平台，提供了ai编译，评测，和错误捕捉的功能
+
+ai_judger 提供通用的评测，错误捕捉等功能不需要 connector 实现
+
+#+BEGIN_LaTeX
+\sum_{i=1}^{n}\mu(i)
+#+END_LaTeX
+
+
+* 目录结构
+** api
+api的h文件
+** doc
+文档
+** judge_client
+本体
+** liquidwar
+液体战争评测移植版
+** ref
+参考
+** test
+测试
+
+
+* api目录 :User:
+** void stepend(int);
+单步结束
+** void judgeend();
+测试结束
+** putresult
++ void putresult(int, char *);
++ void putresult(int, string);
++ void putresult(int, const char *, ...);
+输出结果
+** void putscore(int, int);
+输出分数
+** char readchar();
+读入字符
+** int readint();
+读入整数
+** void linescan(const char *, ...);
+读入一行
+** writestr
++ void writestr(char *);
++ void writestr(string);
++ void writestr(const char *, ...);
+输出一个字符串
+** void puterr(const char *, ...);
+输出stderr字符串
+** void kill(int x)
+杀死 ai_x
+
+
+* 通信协议 :User:
+| string     | meaning                             |
+| a x        | 改变当前ai为x                       |
+| b x        | ai评测完毕                          |
+| c n data   | 对ai输入n个字符                     |
+| d          | 对ai的输出读入，返回n data，n个字符 |
+| q          | 评测完成                            |
+| r n string | ain结果为string                     |
+| s n x      | ain分数为x                          |
+| k x        | 杀死 ai_x                             |
+
+
+* 文件结构
+** compiler.h&c
+compiler类定义&实现
+** exception.h
+意外的定义
+** judger.h&c
+judger类定义&实现
+** okcalls.h
+hustoj传承
+** runner.h&c
+runner,ai_runner,manager_runner类的定义&实现
+** judger_client
+本体
+
+
+* 使用方法
+所有的定义放在namespace ai里
+#+BEGIN_SRC c++
+  ai::judger *ju = new ai::judger(oj_home, ai_num);
+  ju->work();
+  
+#+END_SRC
+结果存在 ju 中，有时间，结果，分数，内存
+x
+
+
+* 本地评测使用方法 :User:
+在当前的目录下建立如下的目录结构
+
+#+BEGIN_SRC C
+  + test
+    + ai0
+      ai.cpp
+    + ai1
+      ai.cpp
+    + connector
+      ai.cpp
+      api.h
+#+END_SRC
+
+编译后在终端运行即可得到结果
+
+
