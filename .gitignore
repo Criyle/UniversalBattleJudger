@@ -1,5 +1,8 @@
 *~
 
+# OS X directory preferences
+.DS_Store
+
 # KDE directory preferences
 .directory
 
