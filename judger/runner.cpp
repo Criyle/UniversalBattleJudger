@@ -8,7 +8,6 @@
 #include <sys/wait.h>
 #include <sys/resource.h>
 #include <dirent.h>
-#include <unistd.h>
 #include <time.h>
 #include <stdarg.h>
 #include <ctype.h>
@@ -29,6 +28,16 @@
 #define REG_RET rax
 #define REG_ARG0 rdi
 #define REG_ARG1 rsi
+#endif
+
+//#define MACOS
+#ifdef MACOS
+
+#define PTRACE_KILL PT_KILL
+#define PTRACE_TRACEME PT_TRACE_ME
+#define PTRACE_SYSCALL PT_SYSCALL
+#define PTRACE_GETREGS PT_GETREGS
+
 #endif
 
 using namespace std;
