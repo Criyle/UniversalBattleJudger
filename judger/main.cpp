@@ -25,7 +25,7 @@
 //#include "connect.h"
 #include "compiler.h"
 
-string oj_home = "/home/criyle/Work/judge/workdir/liquidwar/";
+string oj_home = "/home/criyle/Program/aijudge/workdir/liquidwar/";
 
 char buff[1000];
 
