@@ -1,5 +1,5 @@
 #include "runner.h"
-#include "okcalls.h"
+//#include "okcalls.h"
 #include <stdio.h>
 #include <fcntl.h>
 #include "exception.h"
@@ -8,7 +8,6 @@
 #include <sys/wait.h>
 #include <sys/resource.h>
 #include <dirent.h>
-#include <unistd.h>
 #include <time.h>
 #include <stdarg.h>
 #include <ctype.h>
@@ -31,12 +30,23 @@
 #define REG_ARG1 rsi
 #endif
 
+//#define MACOS
+#ifdef MACOS
+
+#define PTRACE_KILL PT_KILL
+#define PTRACE_TRACEME PT_TRACE_ME
+#define PTRACE_SYSCALL PT_SYSCALL
+#define PTRACE_GETREGS PT_GETREGS
+
+#endif
+
 using namespace std;
 
 namespace ai
 {
 	const int call_array_size = 512;
 	int nowPid, iocount;
+	int record_syscall;
 	
 	int execute_cmd(const char * fmt, ...) {
 		char cmd[1024];
@@ -239,7 +249,8 @@ namespace ai
 	int runner::work()
 	{
 		int flags;
-		init_syscalls_limits();
+		if (record_syscall == 0)
+			init_syscalls_limits();
 		copy_runtime(lang, path.c_str());
 		// create pipes for IO
 		// in
@@ -310,7 +321,7 @@ namespace ai
 	void runner::init_syscalls_limits() {
 		int i;
 		memset(call_counter, 0, sizeof(call_counter));	
-		if (lang <= 1) { // C & C++
+		/*if (lang <= 1) { // C & C++
 			for (i = 0; LANG_CC[i]; i++)
 				call_counter[LANG_CV[i]] = LANG_CC[i];
 		} else if (lang == 2) { // Pascal
@@ -347,6 +358,7 @@ namespace ai
 			for (i = 0; LANG_SC[i]; i++)
 				call_counter[LANG_SV[i]] = LANG_SC[i];
 		}
+		*/
 	}
 
 	void runner::worker()
@@ -542,13 +554,20 @@ namespace ai
 
 		// check the system calls
 		ptrace(PTRACE_GETREGS, pid, NULL, &reg);
-		if (call_counter[reg.REG_SYSCALL] == 0) { //do not limit JVM syscall for using different JVM
-			cerr<<reg.REG_SYSCALL<<endl;
-			throw runtime_error_error("INVALID SYSCALL");
-		}else{
-			if (sub == 1 && call_counter[reg.REG_SYSCALL] > 0)
-				call_counter[reg.REG_SYSCALL]--;
-		}
+		if (record_syscall == 1)
+			{
+				if(sub == 1) call_counter[reg.REG_SYSCALL] ++;
+			}
+		else
+			{
+				if (call_counter[reg.REG_SYSCALL] == 0) { //do not limit JVM syscall for using different JVM
+					cerr<<reg.REG_SYSCALL<<endl;
+					throw runtime_error_error("INVALID SYSCALL");
+				}else{
+					if (sub == 1 && call_counter[reg.REG_SYSCALL] > 0)
+						call_counter[reg.REG_SYSCALL]--;
+				}
+			}
 		sub = 1 - sub;
 	}
 }

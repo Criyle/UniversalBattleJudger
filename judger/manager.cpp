@@ -9,9 +9,6 @@
 using namespace std;
 
 namespace ai{
-	manager::manager(string h, int a, ai_info ai_lmt, ai_info man_lmt)
-		:work_dir(h), ai_num(a), run_flag(0), ai_lmt(ai_lmt), man_lmt(man_lmt) {}
-
 	void manager::work()
 	{
 		char buff[10000];

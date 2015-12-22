@@ -9,8 +9,8 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include <sys/wait.h>
-#include <sys/ptrace.h>
 #include <sys/types.h>
+#include <sys/ptrace.h>
 #include <sys/user.h>
 #include <sys/syscall.h>
 #include <sys/time.h>
@@ -34,6 +34,7 @@ namespace ai
 {
 	//extern int nowPid, iocount;
 	//static char lang_ext[13][8] = {"c", "cc", "pas", "java", "rb", "sh", "py", "php","pl", "cs","m","bas","scm"};
+	extern int record_syscall;
 	struct ai_info
 	{
 		int time;
