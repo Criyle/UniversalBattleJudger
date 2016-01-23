@@ -167,4 +167,10 @@ namespace ai{
 					printf("Child Terminated pid=%d\n", pid);
 			}
 	}
+
+	manager::manager(string home, int ai_num, ai_info ai_lmt, ai_info man_lmt)		: work_dir(home), ai_num(ai_num), ai_lmt(ai_lmt),  man_lmt(man_lmt)
+	{
+
+
+	}
 }
