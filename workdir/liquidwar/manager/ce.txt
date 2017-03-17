@@ -1,0 +1,6 @@
+In file included from manager.h:1:0,
+                 from ai.cpp:1:
+../../../api/manager.h: In function ‘void judge::puterr(const char*, ...)’:
+../../../api/manager.h:536:22: warning: format not a string literal and no format arguments [-Wformat-security]
+   fprintf(stderr, buf);
+                      ^

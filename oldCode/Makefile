@@ -11,9 +11,9 @@ JUDGER_HEADERS = \
 	judger/common.h \
 	judger/env.h \
 	judger/okcalls.h\
-	
+
 all: judger
-	
+
 judger: $(JUDGER_OBJ)
 	$(CXX) $(CXXFLAGS) $(JUDGER_OBJ) -o judger_bin
 
@@ -24,4 +24,3 @@ $(JUDGER_OBJ) : %.o:%.cpp $(JUDGER_HEADERS) %.h
 clean:
 	rm $(JUDGER_OBJ)
 	rm -R ./judger/*~
-	
